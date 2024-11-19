@@ -1,0 +1,70 @@
+<div class="h-screen p-5 bg-gray-5">
+  <h1 class="text-2xl text-center font-bold mb-5">User Creation</h1>
+  <div class="m-2 space-y-2">
+    <form [formGroup]="userCreationForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" formControlName="firstName" class="border-b-2 border-blue-950">
+        <div *ngIf="!userCreationForm.get('firstName')?.untouched && userCreationForm.get('firstName')?.errors">
+          <small *ngIf="userCreationForm.get('firstName')?.errors?.['required']">First name is required</small>
+          <small *ngIf="userCreationForm.get('firstName')?.errors?.['pattern']">First name can only contain letters, spaces, hyphens, and apostrophes</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" formControlName="lastName" class="border-b-2 border-blue-950">
+        <div *ngIf="!userCreationForm.get('lastName')?.untouched && userCreationForm.get('lastName')?.errors">
+          <small *ngIf="userCreationForm.get('lastName')?.errors?.['required']">Last name is required</small>
+          <small *ngIf="userCreationForm.get('lastName')?.errors?.['pattern']">Last name can only contain letters, spaces, hyphens, and apostrophes</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" formControlName="email" class="border-b-2 border-blue-950">
+        <div *ngIf="!userCreationForm.get('email')?.untouched && userCreationForm.get('email')?.errors">
+          <small *ngIf="userCreationForm.get('email')?.errors?.['required']">Email is required</small>
+          <small *ngIf="userCreationForm.get('email')?.errors?.['email']">Invalid email format</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="dateOfBirth">Date of Birth:</label>
+        <input type="date" id="dateOfBirth" formControlName="dateOfBirth" class="border-b-2 border-blue-950">
+        <div *ngIf="!userCreationForm.get('dateOfBirth')?.untouched && userCreationForm.get('dateOfBirth')?.errors">
+          <small *ngIf="userCreationForm.get('dateOfBirth')?.errors?.['required']">Date of birth is required</small>
+          <small *ngIf="!userCreationForm.get('dateOfBirth')?.errors?.['required'] && userCreationForm.get('dateOfBirth')?.errors?.['underage']">You must be at least 18 years old</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="city">City:</label>
+        <input type="text" id="city" formControlName="city" class="border-b-2 border-blue-950">
+        <div *ngIf="!userCreationForm.get('city')?.untouched && userCreationForm.get('city')?.errors">
+          <small *ngIf="userCreationForm.get('city')?.errors?.['required']">City is required</small>
+          <small *ngIf="userCreationForm.get('city')?.errors?.['pattern']">City can only contain letters, spaces, hyphens, and apostrophes</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="postalCode">Postal Code:</label>
+        <input type="text" id="postalCode" formControlName="postalCode" class="border-b-2 border-blue-950">
+        <div *ngIf="!userCreationForm.get('postalCode')?.untouched && userCreationForm.get('postalCode')?.errors">
+          <small *ngIf="userCreationForm.get('postalCode')?.errors?.['required']">Postal code is required</small>
+          <small *ngIf="userCreationForm.get('postalCode')?.errors?.['pattern']">Invalid postal code format (5 digits required)</small>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="userCreationForm.invalid" class="bg-blue-950 text-white">Register</button>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
+    </form>
+  </div>
+</div>

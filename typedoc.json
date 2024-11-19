@@ -1,0 +1,20 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "./src/**/*.ts"
+  ],
+  "entryPointStrategy": "expand",
+  "out": "dist/integration_deploiement_personal_front/browser/docs",
+  "exclude": ["**/node_modules/**", "**/*.spec.ts"],
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeExternals": false,
+  "includeVersion": true,
+  "categorizeByGroup": true,
+  "categoryOrder": ["Components", "Services", "Models", "*"],
+  "name": "Intégration Déploiement - Projet Personnel (Documentation)",
+  "readme": "README.md",
+  "tsconfig": "./tsconfig.json",
+  "sort": ["static-first", "alphabetical"],
+  "gitRevision": "main"
+}
