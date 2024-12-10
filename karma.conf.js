@@ -13,7 +13,7 @@ module.exports = function (config) {
       clearContext: false
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/integration_deploiement_personal_front'),
+      dir: require('path').join(__dirname, './coverage/integration_deploiement_group_front'),
       reporters: [
         { type: 'html' },
         { type: 'lcovonly' },

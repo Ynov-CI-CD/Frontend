@@ -4,7 +4,7 @@
     "./src/**/*.ts"
   ],
   "entryPointStrategy": "expand",
-  "out": "dist/integration_deploiement_personal_front/browser/docs",
+  "out": "dist/integration_deploiement_group_front/browser/docs",
   "exclude": ["**/node_modules/**", "**/*.spec.ts"],
   "excludePrivate": true,
   "excludeProtected": false,

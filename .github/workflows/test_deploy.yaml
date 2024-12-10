@@ -27,19 +27,15 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        working-directory: front
         run: npm install
 
       - name: Build Application
-        working-directory: front
         run: npm run build
 
       - name: Run Tests
-        working-directory: front
         run: npm run test:ci
 
       - name: Generate Documentation
-        working-directory: front
         run: npm run docs
 
       - name: Authenticate with npm
@@ -47,7 +43,6 @@ jobs:
 
       - name: Check if package.json version was modified
         id: check_version
-        working-directory: front
         run: |
           git fetch --unshallow
           PREV_COMMIT=$(git rev-parse HEAD^)
@@ -65,7 +60,6 @@ jobs:
 
       - name: Publish package if version was updated
         if: env.version_changed == 'true'
-        working-directory: front
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -77,7 +71,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: front/dist/integration_deploiement_personal_front/browser
+          path: front/dist/integration_deploiement_group_front/browser
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3

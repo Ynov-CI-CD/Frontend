@@ -1,22 +1,22 @@
 {
-  "name": "integration-deploiement-personal-front",
-  "version": "1.3.1",
+  "name": "integration-deploiement-group-front",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "docs": "typedoc",
     "start": "ng serve",
-    "build": "ng build --base-href=/y_integration_deploiement/ --configuration production",
+    "build": "ng build --base-href=/Frontend/ --configuration production",
     "build:compose": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --browsers=ChromeHeadlessNoSandbox --watch=false",
     "predeploy": "npm run build",
-    "deploy": "ng deploy --repo=https://github.com/strackzdev/y_integration_deploiement.git",
+    "deploy": "ng deploy --repo=https://github.com/Ynov-CI-CD/Frontend.git",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
   "private": false,
-  "homepage": "https://strackzdev.github.io/y_integration_deploiement/",
+  "homepage": "https://ynov-ci-cd.github.io/Frontend/",
   "dependencies": {
     "@angular/animations": "^18.2.0",
     "@angular/common": "^18.2.0",

@@ -6,5 +6,5 @@ RUN npm run build:compose
 
 
 FROM nginx:1.27.2-alpine
-COPY --from=build /usr/local/app/dist/integration_deploiement_personal_front/browser /usr/share/nginx/html
+COPY --from=build /usr/local/app/dist/integration_deploiement_group_front/browser /usr/share/nginx/html
 EXPOSE 80

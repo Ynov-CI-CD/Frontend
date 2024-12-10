@@ -11,5 +11,5 @@ import {UsersListComponent} from './components/users-list/users-list.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'integration_deploiement_personal_front';
+  title = 'integration_deploiement_group_front';
 }
