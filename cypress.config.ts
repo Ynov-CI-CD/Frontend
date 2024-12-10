@@ -2,7 +2,7 @@ import { defineConfig } from "cypress";
 
 export default defineConfig({
   e2e: {
-    baseUrl: "http://localhost:4200",
+    baseUrl: "http://localhost:80",
     viewportWidth: 1280,
     viewportHeight: 720,
 
