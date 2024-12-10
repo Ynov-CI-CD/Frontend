@@ -71,7 +71,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: front/dist/integration_deploiement_group_front/browser
+          path: dist/integration_deploiement_group_front/browser
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
