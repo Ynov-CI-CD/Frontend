@@ -1,10 +1,11 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": [
-    "./src/**/*.ts"
-  ],
   "entryPointStrategy": "expand",
   "out": "dist/integration_deploiement_group_front/browser/docs",
+  "entryPoints": [
+    "./src/**/*.ts",
+    "./src/app/**/*.ts"
+  ],
   "exclude": ["**/node_modules/**", "**/*.spec.ts"],
   "excludePrivate": true,
   "excludeProtected": false,
