@@ -46,7 +46,7 @@ jobs:
         run: |
           git fetch --unshallow
           PREV_COMMIT=$(git rev-parse HEAD^)
-          OLD_VERSION=$(git show $PREV_COMMIT:front/package.json | jq -r '.version')
+          OLD_VERSION=$(git show $PREV_COMMIT:package.json | jq -r '.version')
           NEW_VERSION=$(jq -r '.version' package.json)
 
           if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
