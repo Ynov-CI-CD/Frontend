@@ -11,7 +11,9 @@
     "test": "ng test",
     "test:ci": "ng test --browsers=ChromeHeadlessNoSandbox --watch=false",
     "predeploy": "npm run build",
-    "deploy": "ng deploy --repo=https://github.com/strackzdev/y_integration_deploiement.git"
+    "deploy": "ng deploy --repo=https://github.com/strackzdev/y_integration_deploiement.git",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "private": false,
   "homepage": "https://strackzdev.github.io/y_integration_deploiement/",
@@ -37,6 +39,7 @@
     "@angular/compiler-cli": "^18.2.0",
     "@codecov/webpack-plugin": "^1.2.0",
     "@testing-library/angular": "^17.3.1",
+    "@testing-library/cypress": "^10.0.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/user-event": "^14.5.2",
@@ -44,6 +47,7 @@
     "@typescript-eslint/parser": "^8.8.1",
     "autoprefixer": "^10.4.20",
     "codecov": "^3.8.3",
+    "cypress": "^13.16.1",
     "jasmine-core": "~5.2.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
