@@ -30,7 +30,7 @@ export class UsersService {
    * @param {CreateUserDto} createUserDto The data for creating the new user.
    * @returns {Observable<UserDto>} An observable that emits the created user.
    */
-  createUser(createUserDto: CreateUserDto): Observable<UserDto> {
+  createUser(createUserDto: Omit<CreateUserDto, 'repeatPassword'>): Observable<UserDto> {
     return this.http.post<UserDto>(this.usersApiUrl, createUserDto)
       .pipe(tap(user => this.usersData.next([...this.usersData.value, user])));
   }

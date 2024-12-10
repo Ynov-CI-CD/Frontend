@@ -1,6 +1,14 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {AsyncPipe, DatePipe, NgForOf, NgIf} from '@angular/common';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import {UsersService} from '../../services/users.service';
 import {CreateUserDto} from '../../models/user.dto';
 
@@ -36,8 +44,10 @@ export class UsersCreationFormComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       dateOfBirth: ['', [Validators.required, this.ageValidator]],
       city: ['', [Validators.required, Validators.pattern(/^[A-Za-zÀ-ÖØ-öø-ÿ\s-]+$/)]],
-      postalCode: ['', [Validators.required, Validators.pattern(/^[0-9]{5}$/)]]
-    });
+      postalCode: ['', [Validators.required, Validators.pattern(/^[0-9]{5}$/)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      repeatPassword: ['', [Validators.required, Validators.minLength(8)]],
+    }, { validators: this.passwordMatchValidator });
   }
 
   /**
@@ -62,6 +72,29 @@ export class UsersCreationFormComponent implements OnInit {
 
     // Compare exact date to check if they’re underage
     return birthDate > eighteenYearsAgo ? { underage: true } : null;
+  }
+
+  /**
+   * Validates that the password and repeatPassword fields match.
+   * @returns An object with the validation error `{ passwordsMismatch: true }` if the passwords do not match, otherwise null
+   */
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password');
+    const repeatPassword = form.get('repeatPassword');
+
+    if (!password ||!repeatPassword) {
+      return null;
+    }
+
+    if(password && repeatPassword) {
+      if (password.value !== repeatPassword.value) {
+        repeatPassword.setErrors({ passwordMismatch: true });
+      } else {
+        repeatPassword.setErrors(null);
+      }
+    }
+
+    return null;
   }
 
   /**

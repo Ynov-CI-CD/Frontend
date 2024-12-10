@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {UsersCreationFormComponent} from './users-creation-form.component';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {HttpClientTestingModule, provideHttpClientTesting} from '@angular/common/http/testing';
 import {By} from '@angular/platform-browser';
 import {UsersService} from '../../services/users.service';
@@ -19,6 +19,7 @@ describe('UsersCreationFormComponent', () => {
   let component: UsersCreationFormComponent;
   let fixture: ComponentFixture<UsersCreationFormComponent>;
   let userService: jasmine.SpyObj<UsersService>;
+  let formBuilder: FormBuilder;
 
   beforeEach(async () => {
     const userServiceSpy = jasmine.createSpyObj('UsersService', ['createUser']);
@@ -36,6 +37,7 @@ describe('UsersCreationFormComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.inject(UsersService) as jasmine.SpyObj<UsersService>;
     fixture.detectChanges();
+    formBuilder = TestBed.inject(FormBuilder);
   });
 
   it('should create the form with the correct default values', () => {
@@ -48,10 +50,14 @@ describe('UsersCreationFormComponent', () => {
     expect(form.get('dateOfBirth')?.value).toBe('');
     expect(form.get('city')?.value).toBe('');
     expect(form.get('postalCode')?.value).toBe('');
+    expect(form.get('password')?.value).toBe('');
+    expect(form.get('repeatPassword')?.value).toBe('');
   });
 
   it('should mark form invalid when fields are empty', () => {
     const form = component.userCreationForm;
+
+    form.updateValueAndValidity();
     expect(form.valid).toBeFalsy();
 
     expect(form.get('firstName')?.valid).toBeFalsy();
@@ -60,6 +66,7 @@ describe('UsersCreationFormComponent', () => {
     expect(form.get('dateOfBirth')?.valid).toBeFalsy();
     expect(form.get('city')?.valid).toBeFalsy();
     expect(form.get('postalCode')?.valid).toBeFalsy();
+    expect(form.get('password')?.valid).toBeFalsy();
   });
 
   it('should validate firstName correctly', () => {
@@ -126,6 +133,8 @@ describe('UsersCreationFormComponent', () => {
     form.get('dateOfBirth')?.setValue('1990-01-01');
     form.get('city')?.setValue('New York');
     form.get('postalCode')?.setValue('12345');
+    form.get('password')?.setValue('abcdabcd');
+    form.get('repeatPassword')?.setValue('abcdabcd');
 
     expect(form.valid).toBeTruthy();
   });
@@ -133,12 +142,12 @@ describe('UsersCreationFormComponent', () => {
   it('should create the form and display the title', () => {
     expect(component.userCreationForm).toBeDefined();
     const titleElement = fixture.debugElement.query(By.css('h1'));
-    expect(titleElement.nativeElement.textContent).toContain('User Creation');
+    expect(titleElement.nativeElement.textContent).toContain('Account Creation');
   });
 
   it('should have the correct number of input fields', () => {
     const inputFields = fixture.debugElement.queryAll(By.css('input'));
-    expect(inputFields.length).toBe(6);
+    expect(inputFields.length).toBe(8);
   });
 
   it('should show error message when first name is empty and the input is blurred', async () => {
@@ -178,6 +187,8 @@ describe('UsersCreationFormComponent', () => {
     component.userCreationForm.get('dateOfBirth')?.setValue('2000-01-01');
     component.userCreationForm.get('city')?.setValue('New York');
     component.userCreationForm.get('postalCode')?.setValue('12345');
+    component.userCreationForm.get('password')?.setValue('abcdabcd');
+    component.userCreationForm.get('repeatPassword')?.setValue('abcdabcd');
     fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('button[type="submit"]'));
@@ -192,7 +203,8 @@ describe('UsersCreationFormComponent', () => {
       email: 'test@example.com',
       dateOfBirth: new Date('2000-01-01'),
       city: 'New York',
-      postalCode: '12345'
+      postalCode: '12345',
+      role: 'user',
     };
 
     userService.createUser.and.returnValue(of(mockUserResponse));
@@ -203,6 +215,8 @@ describe('UsersCreationFormComponent', () => {
     component.userCreationForm.get('dateOfBirth')?.setValue('2000-01-01');
     component.userCreationForm.get('city')?.setValue('New York');
     component.userCreationForm.get('postalCode')?.setValue('12345');
+    component.userCreationForm.get('password')?.setValue('abcdabcd');
+    component.userCreationForm.get('repeatPassword')?.setValue('abcdabcd');
 
     await component.onSubmit();
     fixture.detectChanges();
@@ -218,6 +232,8 @@ describe('UsersCreationFormComponent', () => {
       dateOfBirth: null,
       city: null,
       postalCode: null,
+      password: null,
+      repeatPassword: null
     });
   });
 
@@ -230,6 +246,8 @@ describe('UsersCreationFormComponent', () => {
     component.userCreationForm.get('dateOfBirth')?.setValue('2000-01-01');
     component.userCreationForm.get('city')?.setValue('New York');
     component.userCreationForm.get('postalCode')?.setValue('12345');
+    component.userCreationForm.get('password')?.setValue('abcdabcd');
+    component.userCreationForm.get('repeatPassword')?.setValue('abcdabcd');
 
     component.onSubmit();
     fixture.detectChanges();
@@ -303,6 +321,45 @@ describe('UsersCreationFormComponent', () => {
       component.userCreationForm.controls['dateOfBirth'].setValue('invalid-date'); // Invalid date string
       const result = component.ageValidator(component.userCreationForm.controls['dateOfBirth']);
       expect(result).toEqual({ invalidDate: true }); // Expect validation to fail for invalid date
+    });
+  });
+
+  describe('Password Match Validator', () => {
+    let form: FormGroup;
+
+    beforeEach(() => {
+      form = formBuilder.group({
+        password: ['', Validators.required],
+        repeatPassword: ['', Validators.required]
+      }, { validators: component.passwordMatchValidator });
+    });
+
+    it('should return null when passwords match', () => {
+      form.get('password')?.setValue('password123');
+      form.get('repeatPassword')?.setValue('password123');
+
+      component.passwordMatchValidator(form);
+
+      expect(form.get('repeatPassword')?.hasError('passwordMismatch')).toBeFalsy();
+      expect(form.valid).toBeTruthy();
+    });
+
+    it('should set passwordMismatch error when passwords do not match', () => {
+      form.get('password')?.setValue('password123');
+      form.get('repeatPassword')?.setValue('differentpassword');
+
+      component.passwordMatchValidator(form);
+
+      expect(form.get('repeatPassword')?.hasError('passwordMismatch')).toBeTruthy();
+      expect(form.valid).toBeFalsy();
+    });
+
+    it('should return null when password or repeatPassword controls are missing', () => {
+      const incompleteForm = formBuilder.group({});
+
+      const result = component.passwordMatchValidator(incompleteForm);
+
+      expect(result).toBeNull();
     });
   });
 });

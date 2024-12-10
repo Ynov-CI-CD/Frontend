@@ -1,5 +1,5 @@
-<div class="h-screen p-5 bg-gray-5">
-  <h1 class="text-2xl text-center font-bold mb-5">User Creation</h1>
+<div class="h-max p-5 bg-gray-5">
+  <h1 class="text-2xl text-center font-bold mb-5">Account Creation</h1>
   <div class="m-2 space-y-2">
     <form [formGroup]="userCreationForm" (ngSubmit)="onSubmit()">
       <div>
@@ -26,6 +26,37 @@
         <div *ngIf="!userCreationForm.get('email')?.untouched && userCreationForm.get('email')?.errors">
           <small *ngIf="userCreationForm.get('email')?.errors?.['required']">Email is required</small>
           <small *ngIf="userCreationForm.get('email')?.errors?.['email']">Invalid email format</small>
+        </div>
+      </div>
+
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" formControlName="password" class="border-b-2 border-blue-950">
+        <div *ngIf="userCreationForm.get('password')?.invalid &&
+              (userCreationForm.get('password')?.dirty || userCreationForm.get('password')?.touched)">
+          <small *ngIf="userCreationForm.get('password')?.errors?.['required']" class="text-red-500">
+            Password is required
+          </small>
+          <small *ngIf="userCreationForm.get('password')?.errors?.['minlength']" class="text-red-500">
+            Password must be at least 8 characters long
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <label for="repeatPassword">Repeat Password:</label>
+        <input type="password" id="repeatPassword" formControlName="repeatPassword" class="border-b-2 border-blue-950">
+        <div *ngIf="userCreationForm.get('repeatPassword')?.invalid &&
+              (userCreationForm.get('repeatPassword')?.dirty || userCreationForm.get('repeatPassword')?.touched)">
+          <small *ngIf="userCreationForm.get('repeatPassword')?.errors?.['required']" class="text-red-500">
+            Password Repetition is required
+          </small>
+          <small *ngIf="userCreationForm.get('repeatPassword')?.errors?.['minlength']" class="text-red-500">
+            Password must be at least 8 characters long
+          </small>
+          <small *ngIf="userCreationForm.get('repeatPassword')?.errors?.['passwordMismatch']" class="text-red-500">
+            Passwords should match
+          </small>
         </div>
       </div>
 

@@ -1,0 +1,49 @@
+<div class="h-screen bg-white">
+  <div class="h-max p-5 bg-gray-5">
+    <h1 class="text-2xl text-center font-bold mb-5">Login</h1>
+    <div class="m-2 space-y-2">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div>
+          <label for="email">Email:</label>
+          <input type="email" id="email" formControlName="email" class="border-b-2 border-blue-950">
+          <div *ngIf="!loginForm.get('email')?.untouched && loginForm.get('email')?.errors">
+            <small *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</small>
+            <small *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format</small>
+          </div>
+        </div>
+
+        <div>
+          <label for="password">Password:</label>
+          <input type="password" id="password" formControlName="password" class="border-b-2 border-blue-950">
+          <div *ngIf="loginForm.get('password')?.invalid &&
+              (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+            <small *ngIf="loginForm.get('password')?.errors?.['required']" class="text-red-500">
+              Password is required
+            </small>
+            <small *ngIf="loginForm.get('password')?.errors?.['minlength']" class="text-red-500">
+              Password must be at least 8 characters long
+            </small>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="loginForm.invalid" class="bg-blue-950 text-white">Login</button>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <div *ngIf="successMessage" class="success-message">
+          {{ successMessage }}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <p>Do you to create an account ?
+      <span class="text-blue-600 cursor-pointer" routerLink="/register">
+        Register Page
+      </span>
+    </p>
+  </div>
+</div>
