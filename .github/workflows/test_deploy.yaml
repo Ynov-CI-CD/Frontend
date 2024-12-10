@@ -42,7 +42,7 @@ jobs:
         uses: cypress-io/github-action@v6
 
       - name: Stop the stack
-        run: docker compose -f docker-compose-v3.yml down
+        run: docker compose -f docker-compose.yml down
 
       - name: Generate Documentation
         run: npm run docs
