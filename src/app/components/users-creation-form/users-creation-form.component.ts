@@ -1,24 +1,14 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {AsyncPipe, DatePipe, NgForOf, NgIf} from '@angular/common';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators
-} from '@angular/forms';
-import {UsersService} from '../../services/users.service';
+import {NgIf} from '@angular/common';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CreateUserDto} from '../../models/user.dto';
+import {AuthService} from '../../auth/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-users-creation-form',
   standalone: true,
   imports: [
-    AsyncPipe,
-    DatePipe,
-    NgForOf,
     NgIf,
     ReactiveFormsModule
   ],
@@ -27,7 +17,8 @@ import {CreateUserDto} from '../../models/user.dto';
 })
 export class UsersCreationFormComponent implements OnInit {
   formBuilder = inject(FormBuilder);
-  userService = inject(UsersService);
+  router = inject(Router);
+  authService = inject(AuthService);
 
   userCreationForm!: FormGroup;
   submitted = false;
@@ -42,9 +33,9 @@ export class UsersCreationFormComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.pattern(/^[A-Za-zÀ-ÖØ-öø-ÿ\s-]+$/)]],
       lastName: ['', [Validators.required, Validators.pattern(/^[A-Za-zÀ-ÖØ-öø-ÿ\s-]+$/)]],
       email: ['', [Validators.required, Validators.email]],
-      dateOfBirth: ['', [Validators.required, this.ageValidator]],
+      birthDate: ['', [Validators.required, this.ageValidator]],
       city: ['', [Validators.required, Validators.pattern(/^[A-Za-zÀ-ÖØ-öø-ÿ\s-]+$/)]],
-      postalCode: ['', [Validators.required, Validators.pattern(/^[0-9]{5}$/)]],
+      zipCode: ['', [Validators.required, Validators.pattern(/^[0-9]{5}$/)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       repeatPassword: ['', [Validators.required, Validators.minLength(8)]],
     }, { validators: this.passwordMatchValidator });
@@ -107,11 +98,12 @@ export class UsersCreationFormComponent implements OnInit {
 
     if (this.userCreationForm.valid) {
       const userData: CreateUserDto = this.userCreationForm.value;
-      this.userService.createUser(userData).subscribe({
+      this.authService.signOn(userData).subscribe({
         next: (response) => {
           this.successMessage = 'Registration successful!';
           this.errorMessage = null;
           this.userCreationForm.reset();
+          this.router.navigate(['/']);
         },
         error: (err) => {
           console.error(err);

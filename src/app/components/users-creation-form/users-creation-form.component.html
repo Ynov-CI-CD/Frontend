@@ -61,11 +61,11 @@
       </div>
 
       <div>
-        <label for="dateOfBirth">Date of Birth:</label>
-        <input type="date" id="dateOfBirth" formControlName="dateOfBirth" class="border-b-2 border-blue-950">
-        <div *ngIf="!userCreationForm.get('dateOfBirth')?.untouched && userCreationForm.get('dateOfBirth')?.errors">
-          <small *ngIf="userCreationForm.get('dateOfBirth')?.errors?.['required']">Date of birth is required</small>
-          <small *ngIf="!userCreationForm.get('dateOfBirth')?.errors?.['required'] && userCreationForm.get('dateOfBirth')?.errors?.['underage']">You must be at least 18 years old</small>
+        <label for="birthDate">Date of Birth:</label>
+        <input type="date" id="birthDate" formControlName="birthDate" class="border-b-2 border-blue-950">
+        <div *ngIf="!userCreationForm.get('birthDate')?.untouched && userCreationForm.get('birthDate')?.errors">
+          <small *ngIf="userCreationForm.get('birthDate')?.errors?.['required']">Date of birth is required</small>
+          <small *ngIf="!userCreationForm.get('birthDate')?.errors?.['required'] && userCreationForm.get('birthDate')?.errors?.['underage']">You must be at least 18 years old</small>
         </div>
       </div>
 
@@ -79,11 +79,11 @@
       </div>
 
       <div>
-        <label for="postalCode">Postal Code:</label>
-        <input type="text" id="postalCode" formControlName="postalCode" class="border-b-2 border-blue-950">
-        <div *ngIf="!userCreationForm.get('postalCode')?.untouched && userCreationForm.get('postalCode')?.errors">
-          <small *ngIf="userCreationForm.get('postalCode')?.errors?.['required']">Postal code is required</small>
-          <small *ngIf="userCreationForm.get('postalCode')?.errors?.['pattern']">Invalid postal code format (5 digits required)</small>
+        <label for="zipCode">Zip Code:</label>
+        <input type="text" id="zipCode" formControlName="zipCode" class="border-b-2 border-blue-950">
+        <div *ngIf="!userCreationForm.get('zipCode')?.untouched && userCreationForm.get('zipCode')?.errors">
+          <small *ngIf="userCreationForm.get('zipCode')?.errors?.['required']">Zip code is required</small>
+          <small *ngIf="userCreationForm.get('zipCode')?.errors?.['pattern']">Invalid zip code format (5 digits required)</small>
         </div>
       </div>
 

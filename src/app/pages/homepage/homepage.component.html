@@ -1,1 +1,13 @@
-<app-users-list></app-users-list>
+<div class="bg-blue-950 h-screen">
+  <div class="flex justify-between p-8">
+    <h1 class="text-xl text-white font-bold">Homepage</h1>
+    <button
+      (click)="authService.handleLogout()"
+      class="bg-white text-blue-950 rounded-lg p-2"
+    >
+      Logout
+    </button>
+  </div>
+
+  <app-users-list></app-users-list>
+</div>

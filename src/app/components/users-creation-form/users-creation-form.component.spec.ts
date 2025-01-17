@@ -8,6 +8,7 @@ import {UsersService} from '../../services/users.service';
 import {of, throwError} from 'rxjs';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {UserDto} from '../../models/user.dto';
+import {AuthService} from '../../auth/auth.service';
 
 class MockUserService {
   createUser(userData: any) {
@@ -19,6 +20,8 @@ describe('UsersCreationFormComponent', () => {
   let component: UsersCreationFormComponent;
   let fixture: ComponentFixture<UsersCreationFormComponent>;
   let userService: jasmine.SpyObj<UsersService>;
+  let authService: jasmine.SpyObj<AuthService>;
+
   let formBuilder: FormBuilder;
 
   beforeEach(async () => {
@@ -27,7 +30,8 @@ describe('UsersCreationFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [UsersCreationFormComponent, ReactiveFormsModule, HttpClientTestingModule],
       providers: [FormBuilder, { provide: UsersService, useClass: MockUserService }, provideHttpClientTesting(), provideHttpClient(withInterceptorsFromDi()),
-        { provide: UsersService, useValue: userServiceSpy }
+        { provide: UsersService, useValue: userServiceSpy },
+        { provide: AuthService, useValue: jasmine.createSpyObj('AuthService', ['signOn']) }
       ]
     })
       .compileComponents();
@@ -47,9 +51,9 @@ describe('UsersCreationFormComponent', () => {
     expect(form.get('firstName')?.value).toBe('');
     expect(form.get('lastName')?.value).toBe('');
     expect(form.get('email')?.value).toBe('');
-    expect(form.get('dateOfBirth')?.value).toBe('');
+    expect(form.get('birthDate')?.value).toBe('');
     expect(form.get('city')?.value).toBe('');
-    expect(form.get('postalCode')?.value).toBe('');
+    expect(form.get('zipCode')?.value).toBe('');
     expect(form.get('password')?.value).toBe('');
     expect(form.get('repeatPassword')?.value).toBe('');
   });
@@ -63,9 +67,9 @@ describe('UsersCreationFormComponent', () => {
     expect(form.get('firstName')?.valid).toBeFalsy();
     expect(form.get('lastName')?.valid).toBeFalsy();
     expect(form.get('email')?.valid).toBeFalsy();
-    expect(form.get('dateOfBirth')?.valid).toBeFalsy();
+    expect(form.get('birthDate')?.valid).toBeFalsy();
     expect(form.get('city')?.valid).toBeFalsy();
-    expect(form.get('postalCode')?.valid).toBeFalsy();
+    expect(form.get('zipCode')?.valid).toBeFalsy();
     expect(form.get('password')?.valid).toBeFalsy();
   });
 
@@ -108,20 +112,20 @@ describe('UsersCreationFormComponent', () => {
     expect(email?.valid).toBeTruthy();
   });
 
-  it('should validate postalCode correctly', () => {
-    const postalCode = component.userCreationForm.get('postalCode');
+  it('should validate zipCode correctly', () => {
+    const zipCode = component.userCreationForm.get('zipCode');
 
-    postalCode?.setValue('');
-    expect(postalCode?.hasError('required')).toBeTruthy();
+    zipCode?.setValue('');
+    expect(zipCode?.hasError('required')).toBeTruthy();
 
-    postalCode?.setValue('abcde');
-    expect(postalCode?.hasError('pattern')).toBeTruthy();
+    zipCode?.setValue('abcde');
+    expect(zipCode?.hasError('pattern')).toBeTruthy();
 
-    postalCode?.setValue('1234');
-    expect(postalCode?.hasError('pattern')).toBeTruthy();
+    zipCode?.setValue('1234');
+    expect(zipCode?.hasError('pattern')).toBeTruthy();
 
-    postalCode?.setValue('12345');
-    expect(postalCode?.valid).toBeTruthy();
+    zipCode?.setValue('12345');
+    expect(zipCode?.valid).toBeTruthy();
   });
 
   it('should mark form valid when all fields are valid', () => {
@@ -130,9 +134,9 @@ describe('UsersCreationFormComponent', () => {
     form.get('firstName')?.setValue('John');
     form.get('lastName')?.setValue('Doe');
     form.get('email')?.setValue('test@example.com');
-    form.get('dateOfBirth')?.setValue('1990-01-01');
+    form.get('birthDate')?.setValue('1990-01-01');
     form.get('city')?.setValue('New York');
-    form.get('postalCode')?.setValue('12345');
+    form.get('zipCode')?.setValue('12345');
     form.get('password')?.setValue('abcdabcd');
     form.get('repeatPassword')?.setValue('abcdabcd');
 
@@ -184,9 +188,9 @@ describe('UsersCreationFormComponent', () => {
     component.userCreationForm.get('firstName')?.setValue('John');
     component.userCreationForm.get('lastName')?.setValue('Doe');
     component.userCreationForm.get('email')?.setValue('test@example.com');
-    component.userCreationForm.get('dateOfBirth')?.setValue('2000-01-01');
+    component.userCreationForm.get('birthDate')?.setValue('2000-01-01');
     component.userCreationForm.get('city')?.setValue('New York');
-    component.userCreationForm.get('postalCode')?.setValue('12345');
+    component.userCreationForm.get('zipCode')?.setValue('12345');
     component.userCreationForm.get('password')?.setValue('abcdabcd');
     component.userCreationForm.get('repeatPassword')?.setValue('abcdabcd');
     fixture.detectChanges();
@@ -196,25 +200,14 @@ describe('UsersCreationFormComponent', () => {
   });
 
   it('should display success message and reset form on successful registration', async () => {
-    const mockUserResponse: UserDto = {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'test@example.com',
-      dateOfBirth: new Date('2000-01-01'),
-      city: 'New York',
-      postalCode: '12345',
-      role: 'user',
-    };
-
-    userService.createUser.and.returnValue(of(mockUserResponse));
+    authService.signOn.and.returnValue(of());
 
     component.userCreationForm.get('firstName')?.setValue('John');
     component.userCreationForm.get('lastName')?.setValue('Doe');
     component.userCreationForm.get('email')?.setValue('test@example.com');
-    component.userCreationForm.get('dateOfBirth')?.setValue('2000-01-01');
+    component.userCreationForm.get('birthDate')?.setValue('2000-01-01');
     component.userCreationForm.get('city')?.setValue('New York');
-    component.userCreationForm.get('postalCode')?.setValue('12345');
+    component.userCreationForm.get('zipCode')?.setValue('12345');
     component.userCreationForm.get('password')?.setValue('abcdabcd');
     component.userCreationForm.get('repeatPassword')?.setValue('abcdabcd');
 
@@ -229,23 +222,23 @@ describe('UsersCreationFormComponent', () => {
       firstName: null,
       lastName: null,
       email: null,
-      dateOfBirth: null,
+      birthDate: null,
       city: null,
-      postalCode: null,
+      zipCode: null,
       password: null,
       repeatPassword: null
     });
   });
 
   it('should display error message on registration failure', async () => {
-    userService.createUser.and.returnValue(throwError(() => new Error('Registration failed')));
+    authService.signOn.and.returnValue(throwError(() => new Error('Registration failed')));
 
     component.userCreationForm.get('firstName')?.setValue('John');
     component.userCreationForm.get('lastName')?.setValue('Doe');
     component.userCreationForm.get('email')?.setValue('test@example.com');
-    component.userCreationForm.get('dateOfBirth')?.setValue('2000-01-01');
+    component.userCreationForm.get('birthDate')?.setValue('2000-01-01');
     component.userCreationForm.get('city')?.setValue('New York');
-    component.userCreationForm.get('postalCode')?.setValue('12345');
+    component.userCreationForm.get('zipCode')?.setValue('12345');
     component.userCreationForm.get('password')?.setValue('abcdabcd');
     component.userCreationForm.get('repeatPassword')?.setValue('abcdabcd');
 
@@ -266,60 +259,60 @@ describe('UsersCreationFormComponent', () => {
     it('should return null if the age is 18 or older', () => {
       const today = new Date();
       const birthDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-      component.userCreationForm.controls['dateOfBirth'].setValue(birthDate.toISOString().split('T')[0]);
+      component.userCreationForm.controls['birthDate'].setValue(birthDate.toISOString().split('T')[0]);
 
-      const result = component.ageValidator(component.userCreationForm.controls['dateOfBirth']);
+      const result = component.ageValidator(component.userCreationForm.controls['birthDate']);
       expect(result).toBeNull(); // 18 or older should return null
     });
 
     it('should return { underage: true } if the age is below 18', () => {
       const birthDate = new Date();
       birthDate.setFullYear(birthDate.getFullYear() - 10); // Set to 10 years ago
-      component.userCreationForm.controls['dateOfBirth'].setValue(birthDate.toISOString().split('T')[0]);
+      component.userCreationForm.controls['birthDate'].setValue(birthDate.toISOString().split('T')[0]);
 
-      const result = component.ageValidator(component.userCreationForm.controls['dateOfBirth']);
+      const result = component.ageValidator(component.userCreationForm.controls['birthDate']);
       expect(result).toEqual({ underage: true });
     });
 
     it('should return { underage: true } if the age is just under 18', () => {
       const today = new Date();
       const birthDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate() + 1);
-      component.userCreationForm.controls['dateOfBirth'].setValue(birthDate.toISOString().split('T')[0]);
+      component.userCreationForm.controls['birthDate'].setValue(birthDate.toISOString().split('T')[0]);
 
-      const result = component.ageValidator(component.userCreationForm.controls['dateOfBirth']);
+      const result = component.ageValidator(component.userCreationForm.controls['birthDate']);
       expect(result).toEqual({ underage: true }); // Under 18 should return { underage: true }
     });
 
     it('should return { underage: true } if the user is born today', () => {
       const today = new Date();
       const birthDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Born today
-      component.userCreationForm.controls['dateOfBirth'].setValue(birthDate.toISOString().split('T')[0]);
+      component.userCreationForm.controls['birthDate'].setValue(birthDate.toISOString().split('T')[0]);
 
-      const result = component.ageValidator(component.userCreationForm.controls['dateOfBirth']);
+      const result = component.ageValidator(component.userCreationForm.controls['birthDate']);
       expect(result).toEqual({ underage: true });
     });
 
     it('should return { underage: true } if the user 150 or older', () => {
       const date = new Date();
       const birthDate = new Date(date.getFullYear() - 160, date.getMonth(), date.getDate());
-      component.userCreationForm.controls['dateOfBirth'].setValue(birthDate.toISOString().split('T')[0]);
+      component.userCreationForm.controls['birthDate'].setValue(birthDate.toISOString().split('T')[0]);
 
-      const result = component.ageValidator(component.userCreationForm.controls['dateOfBirth']);
+      const result = component.ageValidator(component.userCreationForm.controls['birthDate']);
       expect(result).toEqual({ underage: true });
     });
 
     it('should return { underage: true } if the birth date is just before today', () => {
       const today = new Date();
       const birthDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1); // Born yesterday
-      component.userCreationForm.controls['dateOfBirth'].setValue(birthDate.toISOString().split('T')[0]);
+      component.userCreationForm.controls['birthDate'].setValue(birthDate.toISOString().split('T')[0]);
 
-      const result = component.ageValidator(component.userCreationForm.controls['dateOfBirth']);
+      const result = component.ageValidator(component.userCreationForm.controls['birthDate']);
       expect(result).toEqual({ underage: true });
     });
 
     it('should return { invalidDate: true } for invalid date input', () => {
-      component.userCreationForm.controls['dateOfBirth'].setValue('invalid-date'); // Invalid date string
-      const result = component.ageValidator(component.userCreationForm.controls['dateOfBirth']);
+      component.userCreationForm.controls['birthDate'].setValue('invalid-date'); // Invalid date string
+      const result = component.ageValidator(component.userCreationForm.controls['birthDate']);
       expect(result).toEqual({ invalidDate: true }); // Expect validation to fail for invalid date
     });
   });

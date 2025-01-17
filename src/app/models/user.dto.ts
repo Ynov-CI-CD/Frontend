@@ -1,5 +1,5 @@
 export interface UserDto extends Omit<CreateUserDto, 'password' | 'repeatPassword'> {
-  id: number;
+  _id: string;
   role: UserRole;
 }
 
@@ -7,9 +7,9 @@ export interface CreateUserDto {
   firstName: string;
   lastName: string;
   email: string;
-  dateOfBirth: Date;
+  birthDate: Date;
   city: string;
-  postalCode: string;
+  zipCode: string;
   password: string;
   repeatPassword: string;
 }

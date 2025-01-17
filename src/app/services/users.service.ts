@@ -1,8 +1,9 @@
-import {inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {BehaviorSubject, map, Observable, tap} from 'rxjs';
-import {CreateUserDto, UserDto} from '../models/user.dto';
+import {BehaviorSubject, Observable, tap} from 'rxjs';
+import {UserDto} from '../models/user.dto';
+import {ApiResponseDto} from '../models/api-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,19 +20,24 @@ export class UsersService {
    *
    * @returns {Observable<UserDto[]>} An observable that emits the list of users.
    */
-  getUsers(): Observable<UserDto[]> {
-    return this.http.get<UserDto[]>(this.usersApiUrl)
-      .pipe(tap(users => this.usersData.next(users)));
+  getUsers(): Observable<ApiResponseDto<UserDto>> {
+    return this.http.get<ApiResponseDto<UserDto>>(this.usersApiUrl)
+      .pipe(tap(users => this.usersData.next(users.data)));
   }
 
+
   /**
-   * Creates a new user by sending a POST request to the server and updates the local data.
+   * Delete a user by sending a DELETE request to the server.
    *
-   * @param {CreateUserDto} createUserDto The data for creating the new user.
-   * @returns {Observable<UserDto>} An observable that emits the created user.
+   * @param {string} userId The id to delete the user.
+   * @returns {Observable<UserDto>} An observable that emits and event of delete.
    */
-  createUser(createUserDto: Omit<CreateUserDto, 'repeatPassword'>): Observable<UserDto> {
-    return this.http.post<UserDto>(this.usersApiUrl, createUserDto)
-      .pipe(tap(user => this.usersData.next([...this.usersData.value, user])));
+  deleteUser(userId: string): Observable<void> {
+    return this.http.delete<void>(`${this.usersApiUrl}/${userId}`).pipe(
+      tap(() => {
+        const updatedUsers = this.usersData.value.filter(user => user._id !== userId);
+        this.usersData.next(updatedUsers);
+      })
+    );
   }
 }

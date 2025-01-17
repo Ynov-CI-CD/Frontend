@@ -1,10 +1,11 @@
 import {Component, inject} from '@angular/core';
 import {UsersCreationFormComponent} from "../../components/users-creation-form/users-creation-form.component";
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {UsersService} from '../../services/users.service';
 import {LoginDto} from '../../models/login.dto';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ import {LoginDto} from '../../models/login.dto';
 })
 export class LoginComponent {
   formBuilder = inject(FormBuilder);
-  userService = inject(UsersService);
+  authService = inject(AuthService);
+  router = inject(Router);
 
   loginForm!: FormGroup;
   submitted = false;
@@ -47,19 +49,19 @@ export class LoginComponent {
 
     if (this.loginForm.valid) {
       const loginDto: LoginDto = this.loginForm.value;
-      console.log(loginDto)
-      // this.userService.createUser(userData).subscribe({
-      //   next: (response) => {
-      //     this.successMessage = 'Registration successful!';
-      //     this.errorMessage = null;
-      //     this.userCreationForm.reset();
-      //   },
-      //   error: (err) => {
-      //     console.error(err);
-      //     this.errorMessage = 'Registration failed. Please try again.';
-      //     this.successMessage = null;
-      //   }
-      // });
+      this.authService.signIn(loginDto).subscribe({
+        next: () => {
+          this.successMessage = 'Login successful!';
+          this.errorMessage = null;
+          this.loginForm.reset();
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          console.error(err);
+          this.errorMessage = 'Login failed. Please try again.';
+          this.successMessage = null;
+        }
+      });
     }
   }
 }
