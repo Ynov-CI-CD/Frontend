@@ -6,7 +6,7 @@
     "docs": "typedoc",
     "start": "ng serve",
     "build": "ng build --base-href=/Frontend/ --configuration production",
-    "build:compose": "ng build --configuration production",
+    "build:compose": "ng build --configuration development",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --browsers=ChromeHeadlessNoSandbox --watch=false",
