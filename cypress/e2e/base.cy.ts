@@ -1,9 +1,9 @@
 describe('Website Connection Test', () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('/login');
   });
 
-  it('Should load the homepage', () => {
-    cy.contains('User Creation').should('be.visible');
+  it('Should load the login', () => {
+    cy.contains('Login').should('be.visible');
   });
 });

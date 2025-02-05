@@ -7,7 +7,7 @@ export default defineConfig({
     viewportHeight: 720,
 
     env: {
-      apiUrl: "http://localhost:3000/api",
+      apiUrl: "https://backend.integration-deploiement.strackzdev.com/api",
     },
 
     setupNodeEvents(on, config) {
