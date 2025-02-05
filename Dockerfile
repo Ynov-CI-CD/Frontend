@@ -7,5 +7,6 @@ RUN npm install --legacy-peer-deps
 RUN npm run build:compose
 
 FROM nginx:1.27.2-alpine
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/local/app/dist/integration_deploiement_group_front/browser /usr/share/nginx/html
 EXPOSE 80
