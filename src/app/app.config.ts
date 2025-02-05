@@ -14,6 +14,6 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([
         authInterceptor
       ])
-    ),
+    )
   ]
 };

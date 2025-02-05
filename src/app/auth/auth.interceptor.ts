@@ -24,9 +24,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     tap((response: HttpEvent<any>) => {
-      if(tokenService.isLoggedIn() && authToken) {
+      if(tokenService.isLoggedIn()) {
         authService.isLoggedIn$.next(true);
-        authService.loggedUser$.next(jwtDecode<JwtTokenPayload>(authToken));
+        authService.loggedUser$.next(jwtDecode<JwtTokenPayload>(authToken!));
       }
     }),
     catchError((error) => {

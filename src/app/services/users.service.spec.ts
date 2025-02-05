@@ -35,14 +35,18 @@ describe('UsersService', () => {
         { _id: "2", firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com', birthDate: new Date('1992-02-02'), city: 'CityB', zipCode: '67890', role: 'user' },
       ];
 
-      service.getUsers().subscribe((users) => {
-        expect(users.data).toEqual(expectedUsers);
+      const apiResponse = {
+        data: expectedUsers
+      };
+
+      service.getUsers().subscribe((response) => {
+        expect(response.data).toEqual(expectedUsers);
       });
 
       const req = httpTestingController.expectOne(`${environment.apiUrl}/users`);
       expect(req.request.method).toEqual('GET');
 
-      req.flush(expectedUsers);
+      req.flush(apiResponse);
 
       service.usersData.subscribe((users) => {
         expect(users).toEqual(expectedUsers);
@@ -50,34 +54,30 @@ describe('UsersService', () => {
     });
   });
 
-  // describe('createUser', () => {
-  //   it('should add a new user and return it', () => {
-  //     const newUser: CreateUserDto = {
-  //       firstName: 'Alice',
-  //       lastName: 'Brown',
-  //       email: 'alice@example.com',
-  //       birthDate: new Date('1995-05-05'),
-  //       city: 'CityC',
-  //       zipCode: '54321',
-  //       password: 'password123',
-  //       repeatPassword: 'password123'
-  //     };
-  //
-  //     const createdUser: UserDto = { id: 3, role: 'user', ...newUser };
-  //
-  //     service.createUser(newUser).subscribe(user => {
-  //       expect(user).toEqual(createdUser);
-  //     });
-  //
-  //     const req = httpTestingController.expectOne(`${environment.apiUrl}/users`);
-  //     expect(req.request.method).toEqual('POST');
-  //     expect(req.request.body).toEqual(newUser);
-  //
-  //     req.flush(createdUser);
-  //
-  //     service.usersData.subscribe(users => {
-  //       expect(users).toEqual([createdUser]);
-  //     });
-  //   });
-  // });
+  describe('deleteUser', () => {
+    it('should delete the user and update the usersData subject', () => {
+      const userIdToDelete = '1';
+      const initialUsers: UserDto[] = [
+        { _id: "1", firstName: 'John', lastName: 'Doe', email: 'john@example.com', birthDate: new Date('1990-01-01'), city: 'CityA', zipCode: '12345', role: 'user' },
+        { _id: "2", firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com', birthDate: new Date('1992-02-02'), city: 'CityB', zipCode: '67890', role: 'user' },
+      ];
+
+      const expectedUsersAfterDelete: UserDto[] = [
+        { _id: "2", firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com', birthDate: new Date('1992-02-02'), city: 'CityB', zipCode: '67890', role: 'user' },
+      ];
+
+      service.usersData.next(initialUsers);
+
+      service.deleteUser(userIdToDelete).subscribe(() => {
+        service.usersData.subscribe((users) => {
+          expect(users).toEqual(expectedUsersAfterDelete);
+        });
+      });
+
+      const req = httpTestingController.expectOne(`${environment.apiUrl}/users/${userIdToDelete}`);
+      expect(req.request.method).toEqual('DELETE');
+
+      req.flush(null);
+    });
+  });
 });

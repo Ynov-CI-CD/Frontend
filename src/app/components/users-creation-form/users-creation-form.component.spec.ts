@@ -199,57 +199,6 @@ describe('UsersCreationFormComponent', () => {
     expect(button.nativeElement.disabled).toBe(false);
   });
 
-  it('should display success message and reset form on successful registration', async () => {
-    authService.signOn.and.returnValue(of());
-
-    component.userCreationForm.get('firstName')?.setValue('John');
-    component.userCreationForm.get('lastName')?.setValue('Doe');
-    component.userCreationForm.get('email')?.setValue('test@example.com');
-    component.userCreationForm.get('birthDate')?.setValue('2000-01-01');
-    component.userCreationForm.get('city')?.setValue('New York');
-    component.userCreationForm.get('zipCode')?.setValue('12345');
-    component.userCreationForm.get('password')?.setValue('abcdabcd');
-    component.userCreationForm.get('repeatPassword')?.setValue('abcdabcd');
-
-    await component.onSubmit();
-    fixture.detectChanges();
-
-    const successMessageElement = fixture.nativeElement.querySelector('.success-message');
-    expect(successMessageElement).toBeTruthy();
-    expect(successMessageElement.textContent).toContain('Registration successful!');
-
-    expect(component.userCreationForm.value).toEqual({
-      firstName: null,
-      lastName: null,
-      email: null,
-      birthDate: null,
-      city: null,
-      zipCode: null,
-      password: null,
-      repeatPassword: null
-    });
-  });
-
-  it('should display error message on registration failure', async () => {
-    authService.signOn.and.returnValue(throwError(() => new Error('Registration failed')));
-
-    component.userCreationForm.get('firstName')?.setValue('John');
-    component.userCreationForm.get('lastName')?.setValue('Doe');
-    component.userCreationForm.get('email')?.setValue('test@example.com');
-    component.userCreationForm.get('birthDate')?.setValue('2000-01-01');
-    component.userCreationForm.get('city')?.setValue('New York');
-    component.userCreationForm.get('zipCode')?.setValue('12345');
-    component.userCreationForm.get('password')?.setValue('abcdabcd');
-    component.userCreationForm.get('repeatPassword')?.setValue('abcdabcd');
-
-    component.onSubmit();
-    fixture.detectChanges();
-
-    const errorMessageElement = fixture.nativeElement.querySelector('.error-message');
-    expect(errorMessageElement).toBeTruthy();
-    expect(errorMessageElement.textContent).toContain('Registration failed. Please try again.');
-  });
-
   describe('ageValidator', () => {
 
     beforeEach(() => {

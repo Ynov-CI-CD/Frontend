@@ -30,7 +30,7 @@ export class AuthService {
    * @param {LoginDto} loginDto The data for signing in the user.
    * @returns {Observable<void>} An observable that emits the connection.
    */
-  signIn(loginDto: LoginDto): Observable<void> {
+  signIn(loginDto: LoginDto): Observable<JwtTokenPayload> {
     return this.http.post<UserDto>(`${this.authApiUrl}/login`, loginDto)
       .pipe(
         map(this.handleTokenResponse.bind(this)),
@@ -44,7 +44,7 @@ export class AuthService {
    * @param {CreateUserDto} createUserDto The data for creating the new user.
    * @returns {Observable<UserDto>} An observable that emits the created user.
    */
-  signOn(createUserDto: Omit<CreateUserDto, 'repeatPassword'>): Observable<void> {
+  signOn(createUserDto: Omit<CreateUserDto, 'repeatPassword'>): Observable<JwtTokenPayload> {
     return this.http.post<UserDto>(`${this.authApiUrl}/register`, createUserDto).pipe(
       map(this.handleTokenResponse.bind(this)),
       catchError(this.handleError)
@@ -56,12 +56,12 @@ export class AuthService {
   }
 
 
-  private handleTokenResponse(response: any): void {
-    if (response?.access_token) {
+  private handleTokenResponse(response: any): JwtTokenPayload {
+      const jwtDecoded = jwtDecode<JwtTokenPayload>(response.access_token)
       this.tokenService.setToken(response.access_token);
       this.isLoggedIn$.next(true);
-      this.loggedUser$.next(jwtDecode<JwtTokenPayload>(response.access_token));
-    }
+      this.loggedUser$.next(jwtDecoded);
+      return jwtDecoded;
   }
 
   public handleLogout(): void {

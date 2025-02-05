@@ -6,6 +6,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {UsersService} from '../../services/users.service';
 import {LoginDto} from '../../models/login.dto';
 import {AuthService} from '../../auth/auth.service';
+import {catchError, EMPTY, tap} from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -62,6 +63,21 @@ export class LoginComponent {
           this.successMessage = null;
         }
       });
+
+      // this.authService.signIn(loginDto).pipe(
+      //   tap(() => {
+      //     this.successMessage = 'Login successful!';
+      //     this.errorMessage = null;
+      //     this.loginForm.reset();
+      //     this.router.navigate(['/']);
+      //   }),
+      //   catchError((err) => {
+      //     console.error(err);
+      //     this.errorMessage = 'Login failed. Please try again.';
+      //     this.successMessage = null;
+      //     return EMPTY;
+      //   })
+      // )
     }
   }
 }
