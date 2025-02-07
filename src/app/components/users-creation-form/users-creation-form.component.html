@@ -4,7 +4,7 @@
     <form [formGroup]="userCreationForm" (ngSubmit)="onSubmit()">
       <div>
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" formControlName="firstName" class="border-b-2 border-blue-950">
+        <input type="text" [attr.data-cy]="'firstName'" id="firstName" formControlName="firstName" class="border-b-2 border-blue-950">
         <div *ngIf="!userCreationForm.get('firstName')?.untouched && userCreationForm.get('firstName')?.errors">
           <small *ngIf="userCreationForm.get('firstName')?.errors?.['required']">First name is required</small>
           <small *ngIf="userCreationForm.get('firstName')?.errors?.['pattern']">First name can only contain letters, spaces, hyphens, and apostrophes</small>
@@ -13,7 +13,7 @@
 
       <div>
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" formControlName="lastName" class="border-b-2 border-blue-950">
+        <input type="text" [attr.data-cy]="'lastName'" id="lastName" formControlName="lastName" class="border-b-2 border-blue-950">
         <div *ngIf="!userCreationForm.get('lastName')?.untouched && userCreationForm.get('lastName')?.errors">
           <small *ngIf="userCreationForm.get('lastName')?.errors?.['required']">Last name is required</small>
           <small *ngIf="userCreationForm.get('lastName')?.errors?.['pattern']">Last name can only contain letters, spaces, hyphens, and apostrophes</small>
@@ -22,7 +22,7 @@
 
       <div>
         <label for="email">Email:</label>
-        <input type="email" id="email" formControlName="email" class="border-b-2 border-blue-950">
+        <input type="email" [attr.data-cy]="'email'" id="email" formControlName="email" class="border-b-2 border-blue-950">
         <div *ngIf="!userCreationForm.get('email')?.untouched && userCreationForm.get('email')?.errors">
           <small *ngIf="userCreationForm.get('email')?.errors?.['required']">Email is required</small>
           <small *ngIf="userCreationForm.get('email')?.errors?.['email']">Invalid email format</small>
@@ -31,7 +31,7 @@
 
       <div>
         <label for="password">Password:</label>
-        <input type="password" id="password" formControlName="password" class="border-b-2 border-blue-950">
+        <input type="password" [attr.data-cy]="'password'" id="password" formControlName="password" class="border-b-2 border-blue-950">
         <div *ngIf="userCreationForm.get('password')?.invalid &&
               (userCreationForm.get('password')?.dirty || userCreationForm.get('password')?.touched)">
           <small *ngIf="userCreationForm.get('password')?.errors?.['required']" class="text-red-500">
@@ -45,7 +45,7 @@
 
       <div>
         <label for="repeatPassword">Repeat Password:</label>
-        <input type="password" id="repeatPassword" formControlName="repeatPassword" class="border-b-2 border-blue-950">
+        <input type="password" [attr.data-cy]="'repeatPassword'" id="repeatPassword" formControlName="repeatPassword" class="border-b-2 border-blue-950">
         <div *ngIf="userCreationForm.get('repeatPassword')?.invalid &&
               (userCreationForm.get('repeatPassword')?.dirty || userCreationForm.get('repeatPassword')?.touched)">
           <small *ngIf="userCreationForm.get('repeatPassword')?.errors?.['required']" class="text-red-500">
@@ -62,7 +62,7 @@
 
       <div>
         <label for="birthDate">Date of Birth:</label>
-        <input type="date" id="birthDate" formControlName="birthDate" class="border-b-2 border-blue-950">
+        <input type="date" [attr.data-cy]="'birthDate'" id="birthDate" formControlName="birthDate" class="border-b-2 border-blue-950">
         <div *ngIf="!userCreationForm.get('birthDate')?.untouched && userCreationForm.get('birthDate')?.errors">
           <small *ngIf="userCreationForm.get('birthDate')?.errors?.['required']">Date of birth is required</small>
           <small *ngIf="!userCreationForm.get('birthDate')?.errors?.['required'] && userCreationForm.get('birthDate')?.errors?.['underage']">You must be at least 18 years old</small>
@@ -71,7 +71,7 @@
 
       <div>
         <label for="city">City:</label>
-        <input type="text" id="city" formControlName="city" class="border-b-2 border-blue-950">
+        <input type="text" [attr.data-cy]="'city'" id="city" formControlName="city" class="border-b-2 border-blue-950">
         <div *ngIf="!userCreationForm.get('city')?.untouched && userCreationForm.get('city')?.errors">
           <small *ngIf="userCreationForm.get('city')?.errors?.['required']">City is required</small>
           <small *ngIf="userCreationForm.get('city')?.errors?.['pattern']">City can only contain letters, spaces, hyphens, and apostrophes</small>
@@ -80,14 +80,14 @@
 
       <div>
         <label for="zipCode">Zip Code:</label>
-        <input type="text" id="zipCode" formControlName="zipCode" class="border-b-2 border-blue-950">
+        <input type="text" [attr.data-cy]="'zipCode'" id="zipCode" formControlName="zipCode" class="border-b-2 border-blue-950">
         <div *ngIf="!userCreationForm.get('zipCode')?.untouched && userCreationForm.get('zipCode')?.errors">
           <small *ngIf="userCreationForm.get('zipCode')?.errors?.['required']">Zip code is required</small>
           <small *ngIf="userCreationForm.get('zipCode')?.errors?.['pattern']">Invalid zip code format (5 digits required)</small>
         </div>
       </div>
 
-      <button type="submit" [disabled]="userCreationForm.invalid" class="bg-blue-950 text-white">Register</button>
+      <button type="submit" [attr.data-cy]="'submit'" [disabled]="userCreationForm.invalid" class="bg-blue-950 text-white">Register</button>
 
       <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}

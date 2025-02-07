@@ -5,9 +5,12 @@ export default defineConfig({
     baseUrl: "http://localhost",
     viewportWidth: 1280,
     viewportHeight: 720,
+    video: false,
+    chromeWebSecurity: false,
 
     env: {
-      apiUrl: "https://backend.integration-deploiement.strackzdev.com/api",
+      apiUrl: "https://backend.integration-deploiement.strackzdev.com",
+      disableGpu: true,
     },
 
     setupNodeEvents(on, config) {

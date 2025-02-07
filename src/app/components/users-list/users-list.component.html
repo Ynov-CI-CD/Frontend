@@ -4,6 +4,7 @@
       class="group flex flex-col gap-2 rounded-lg bg-black bg-opacity-50 p-5 text-white"
       tabindex="1"
       *ngFor="let user of usersService.usersData | async"
+      [attr.data-cy]="'blockUser'"
     >
       <div class="flex cursor-pointer items-center justify-between">
         <span class="font-bold text-lg">{{user.firstName}} {{user.lastName}}</span>
@@ -11,11 +12,13 @@
           <button
             (click)="deleteUser(user._id)"
             *ngIf="authService.isUserAdmin()"
+            [attr.data-cy]="'deleteUser'"
             class="bg-red-500 text-white rounded-lg p-3"
           >
             Delete
           </button>
           <img
+            *ngIf="authService.isUserAdmin()"
             src="https://upload.wikimedia.org/wikipedia/commons/9/96/Chevron-icon-drop-down-menu-WHITE.png"
             class="h-2 w-3 transition-all duration-500 group-focus:-rotate-180"
             alt="arrow"/>
@@ -23,6 +26,8 @@
       </div>
       <div
         class="invisible h-auto max-h-0 items-center opacity-0 transition-all group-focus:visible group-focus:max-h-screen group-focus:opacity-100 group-focus:duration-1000"
+        *ngIf="authService.isUserAdmin()"
+        [attr.data-cy]="'infosUser'"
       >
         {{user.city}} | {{user.zipCode}} | {{user.birthDate | date}} | {{user.email}}
       </div>

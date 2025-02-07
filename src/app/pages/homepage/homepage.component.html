@@ -3,6 +3,7 @@
     <h1 class="text-xl text-white font-bold">Homepage</h1>
     <button
       (click)="authService.handleLogout()"
+      [attr.data-cy]="'logout'"
       class="bg-white text-blue-950 rounded-lg p-2"
     >
       Logout
