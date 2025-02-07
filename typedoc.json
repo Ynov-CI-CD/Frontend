@@ -13,7 +13,7 @@
   "includeVersion": true,
   "categorizeByGroup": true,
   "categoryOrder": ["Components", "Services", "Models", "*"],
-  "name": "Intégration Déploiement - Projet Personnel (Documentation)",
+  "name": "Intégration Déploiement - Projet Group (Documentation)",
   "readme": "README.md",
   "tsconfig": "./tsconfig.json",
   "sort": ["static-first", "alphabetical"],

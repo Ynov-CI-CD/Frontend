@@ -5,7 +5,7 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div>
           <label for="email">Email:</label>
-          <input type="email" id="email" formControlName="email" class="border-b-2 border-blue-950">
+          <input type="email" [attr.data-cy]="'email'" id="email" formControlName="email" class="border-b-2 border-blue-950">
           <div *ngIf="!loginForm.get('email')?.untouched && loginForm.get('email')?.errors">
             <small *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</small>
             <small *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format</small>
@@ -14,7 +14,7 @@
 
         <div>
           <label for="password">Password:</label>
-          <input type="password" id="password" formControlName="password" class="border-b-2 border-blue-950">
+          <input type="password" [attr.data-cy]="'password'"  id="password" formControlName="password" class="border-b-2 border-blue-950">
           <div *ngIf="loginForm.get('password')?.invalid &&
               (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
             <small *ngIf="loginForm.get('password')?.errors?.['required']" class="text-red-500">
@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <button type="submit" [disabled]="loginForm.invalid" class="bg-blue-950 text-white">Login</button>
+        <button type="submit" [disabled]="loginForm.invalid" [attr.data-cy]="'submit'" class="bg-blue-950 text-white">Login</button>
 
         <div *ngIf="errorMessage" class="error-message">
           {{ errorMessage }}
