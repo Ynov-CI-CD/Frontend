@@ -1,27 +1,84 @@
-# IntegrationDeploiementGroupFront
+# Group Project - Integration and Deployment
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.7.
+This is a YNOV School project aiming to test, build, and deploy a project, helping students to understand how it works in a real deployment chain from development to deployment.
 
-## Development server
+# References
+- [Important Links](#important-links)
+- [Project Documentation](#project-documentation)
+- [Project Structure](#project-structure)
+- [Key Features](#key-features)
+- [Project Evaluation](#project-evaluation)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Important Links:
 
-## Code scaffolding
+- Webapp (Github Pages): [Click Here](https://ynov-ci-cd.github.io/Frontend/)
+- Auto-Generated Documentation (Webapp): [Click Here](https://ynov-ci-cd.github.io/Frontend/docs/)
+- Swagger: [Click Here](https://backend.integration-deploiement.strackzdev.com/api)
+- Codecov: [Click Here](https://app.codecov.io/gh/Ynov-CI-CD/Frontend)
+- NPM Package: [Click Here](https://www.npmjs.com/package/integration-deploiement-personal-front)
+- Github Repository Frontend: [Click Here](https://github.com/Ynov-CI-CD/Frontend)
+- Github Repository Backend: [Click Here](https://github.com/Ynov-CI-CD/Backend)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+**Note:** In the important links section, we mentioned the web app deployment on GitHub Pages, but we also have the deployment on Coolify: [Webapp](https://integration-deploiement.strackzdev.com/) & [Backend](https://backend.integration-deploiement.strackzdev.com).
 
-## Build
+## Project Documentation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Docker Architecture: [Click Here](docs/architecture_docker.md)
+- Global Testing: [Click Here](docs/testing.md)
+- Deployment: [Click Here](docs/deployment.md)
 
-## Running unit tests
+## Task Distribution
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### José
+- Front-end development
+- Unit and integration testing (front-end)
+- GitLab CI/CD setup
+- Management and deployment with Coolify
+- General documentation
+- Front-end documentation generation (TSDoc, etc.)
+- Creating Dockerfiles
+- Setting up Docker Compose
+- Codecov integration
+- Publishing the front-end on NPM
 
-## Running end-to-end tests
+### Timothée
+- Back-end development
+- Unit and integration testing (back-end)
+- End-to-end (E2E) testing (front-end/back-end)
+- General documentation
+- API documentation and management with OpenAPI
+- Creating Dockerfiles
+- Setting up Docker Compose
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Project Structure
 
-## Further help
+The project is structured into two main repositories: the backend (NestJS) and the frontend (Angular). Both parts are organized into separate directories:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- `back`: Contains the backend code, including NestJS configuration, TypeScript source files, and test files.
+- `front`: Contains the frontend code, including Angular configuration, TypeScript source files, and test files.
+
+## Key Features
+
+- Backend:
+    - Built with NestJS, a progressive Node.js framework.
+    - Uses TypeScript for type-safe development.
+    - Implements a RESTful API for user management.
+    - Includes unit tests, integration and end-to-end tests using Jest and supertest.
+
+- Frontend:
+    - Built with Angular, a popular TypeScript-based framework.
+    - Uses Angular CLI for project setup and development.
+    - Implements a user interface for managing users.
+    - Includes unit tests, integration and end-to-end tests using Angular's testing framework.
+
+## Project Evaluation
+
+- Achieved nearly 100% code coverage through Unit Tests to validate the mechanics of specific features.
+- Completed nearly 100% Integration Test coverage to ensure end-to-end functionality, including template changes and interactions.
+- Automated the generation of functional documentation, a structured README, and coverage reports deployed to Codecov.
+- Implemented a workflow encompassing testing, global deployment, and GitHub Pages integration.
+
+**Bonus:**
+
+- The UI/UX of our Angular application is designed to be visually appealing and user-friendly.
+- The code is properly implemented and optimized on both the backend and frontend, ensuring smooth functionality across the entire application.
